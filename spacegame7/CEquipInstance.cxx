@@ -19,6 +19,9 @@
 #include "CEquipInstance.hxx"
 #include "CEquippedObject.hxx"
 
+
+
+
 /*
  * The weapon fires.
  * 
@@ -66,7 +69,24 @@ void CWeaponInstance::fire(void)
 		// to the shooter's stats.
 		// For now, damage multiplier is always 1.0.
 
-		parms.flDamageMultiplier = 1.0f;
+		// Om flEnergyCost är 0 så är det en kinetisk vapentyp.
+		if (pWeapArch->flEnergyCost == 0.0f) {
+			parms.flDamageMultiplier = 1.0f + pOriginatingEntity->get_stat(Stat::KINETIC_PROFICIENCY) * 0.01f;
+
+		// Om flEnergyCost är större än 0 så är det en energibaserad vapentyp.
+		} else if(pWeapArch->flEnergyCost > 0.0f) {
+			parms.flDamageMultiplier = 1.0f + pOriginatingEntity->get_stat(Stat::LASER_PROFICIENCY) * 0.01f;
+		}
+
+		// Missile
+		else if(pWeapArch->uiArchType == ARCH_MISSILE) {
+			parms.flDamageMultiplier = 1.0f + pOriginatingEntity->get_stat(Stat::MISSILE_PROFICIENCY) * 0.01f;
+		}
+
+		else {
+			parms.flDamageMultiplier = 1.0f;
+		};
+
 	}
 
 	parms.vPosition = vInitialPosition;

@@ -401,7 +401,10 @@ void CShip::collision_callback(IWorldObject *pOtherObject)
 					 * TODO: Need to apply the player's luck stat to determine how much additional
 					 * metal they will loot.
 					 */
-					float flMetalMultiplier = 1.0f;
+
+					/* Den här lyckades ja göra. Ändrar metal drops beroende på hur hög LUCK level spelaren har.*/
+
+					float flMetalMultiplier = 1.0f + pPlayerEntity->get_stat(Stat::LUCK) * 0.01f;
 
 					unsigned int uiFinalMetalAward = (unsigned int)(flMetalMultiplier * uiMetalAward);
 
